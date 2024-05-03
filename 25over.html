@@ -17,8 +17,8 @@
     </div>
     <div>
        <ul class="nav navbar-nav">
-           <li><a href="index.html">All Tickets</a></li>
-           <li class="active"><a href="25over.html">25mph or move over</a></li>
+           <li class="active"><a href="index.html">All Tickets</a></li>
+           <li><a href="25over.html">25mph or more over</a></li>
        </ul>
     </div>
 
@@ -26,8 +26,8 @@
 
 <div id="ticketApp">
 
-     <h2>Tickets July 4, 2014, Minneapolis/St. Paul</h2>
-          
+     <h2>Tickets July 4, 2014, Minneapolis/St. Paul, 25 mph or more over the limit</h2>
+
           <table class="table table-bordered table-striped">
               <tr>
                   <th>Ticket ID</th>
@@ -44,10 +44,8 @@
                   <td>{{ticket.violator_sex}}</td>
               </tr>
          </table>
-  
-</div>   <!-- end gpaApp -->
-</div>   <!-- end class= 'container' -->
 
+</div>
 <script>
        let app = Vue.createApp({
             data() {     // returns an object of data
@@ -58,17 +56,19 @@
             created() {      // section executes as page loads
                 this.getData()  // load json data as page loads
             },
-            methods: {    // ajax request
+            methods: {
                 async getData() {
                     const response = await fetch('tickets1.json')
-                    this.tickets = await response.json()
-                    //tickets = data.filter( (item) => item.major == majSelect );     
+                    citations = await response.json()
+                    this.tickets = citations.filter( (item) => item.actual_speed > item.posted_speed + 25);    
+                    console.log(this.tickets) 
+
                 },
             }
           })
-      
-      app.mount('#ticketApp')   //in which div to mount the vue app
-		  
+
+      app.mount('#ticketApp')
+
 
 </script>
 </body></html>
